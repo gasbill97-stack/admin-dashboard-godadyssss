@@ -3,32 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOI Admin Dashboard</title>    
+    <title>BOI Admin Dashboard</title>
+    
     <style>
-        /* UI Design (Same as before) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background: #f0f2f5; min-height: 100vh; }
+        
         #loginScreen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #F26522 0%, #003366 100%); }
         .login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 90%; max-width: 400px; text-align: center; }
         .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
         .login-btn { width: 100%; padding: 12px; background: #F26522; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; }
+
         #dashboard { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .header h1 { font-size: 24px; color: #003366; }
         .header-buttons { display: flex; gap: 10px; }
         .btn-header { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; }
         .btn-password { background: #ffc107; }
         .btn-logout { background: #dc3545; color: white; }
+
         .device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        
         .device-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
         .btn-delete { position: absolute; top: 15px; right: 15px; background: #ffebee; color: #c62828; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
         .online { background: #d4edda; color: #155724; }
         .offline { background: #f8d7da; color: #721c24; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
         .modal-content { background: white; width: 90%; max-width: 500px; margin: 80px auto; padding: 25px; border-radius: 12px; }
         .close { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 12px 24px; border-radius: 6px; display: none; }
     </style>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,7 +45,7 @@
         <div class="login-card">
             <h2><i class="fas fa-university"></i> BOI Admin Panel</h2>
             <input type="password" id="passwordInput" class="login-input" placeholder="Enter Admin Password">
-            <button onclick="login()" class="login-btn">Secure Login</button>
+            <button onclick="login()" class="login-btn">Login</button>
         </div>
     </div>
 
@@ -47,7 +53,7 @@
         <div class="header">
             <h1><i class="fas fa-shield-alt"></i> BOI Device Manager</h1>
             <div class="header-buttons">
-                <button onclick="openChangePasswordModal()" class="btn-header btn-password">Change Password</button>
+                <button onclick="openChangePasswordModal()" class="btn-header btn-password">Password</button>
                 <button onclick="logout()" class="btn-header btn-logout">Logout</button>
             </div>
         </div>
@@ -57,144 +63,86 @@
     <div id="passwordModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('passwordModal')">&times;</span>
-            <h3>Change Admin Password</h3>
-            <input type="password" id="currPass" class="login-input" placeholder="Current Password" style="margin-top:20px;">
-            <input type="password" id="newPass" class="login-input" placeholder="New Password">
-            <input type="password" id="confPass" class="login-input" placeholder="Confirm New Password">
-            <button class="login-btn" onclick="saveNewPassword()">Update Password</button>
+            <h3>Change Password</h3>
+            <input type="password" id="currPass" class="login-input" placeholder="Current" style="margin-top:20px;">
+            <input type="password" id="newPass" class="login-input" placeholder="New">
+            <input type="password" id="confPass" class="login-input" placeholder="Confirm">
+            <button class="login-btn" onclick="saveNewPassword()">Update</button>
         </div>
     </div>
-    
-    <div id="toast" class="toast"></div>
 
-<script>
-    const SUPABASE_URL = 'https://lcguyfxorfhvpcvnicpa.supabase.co'; 
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjZ3V5ZnhvcmZodnBjdm5pY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0Njc2NDksImV4cCI6MjA4MTA0MzY0OX0.mx_3uB_5XMXYb3_at237Ow0AEL8N_FZpF0DHo874VV8';
-    
-    let supabase, currentDeviceId;
-    let ADMIN_PASSWORD = 'admin123';
-    
-    // --- NEW: Security Timers ---
-    let inactivityTimer;
-    let sessionChecker;
-    const LOGOUT_TIME = 10 * 60 * 1000; // 10 minutes
-
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!window.supabase) return alert("Supabase SDK not loaded.");
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <script>
+        const SUPABASE_URL = 'https://lcguyfxorfhvpcvnicpa.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjZ3V5ZnhvcmZodnBjdm5pY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0Njc2NDksImV4cCI6MjA4MTA0MzY0OX0.mx_3uB_5XMXYb3_at237Ow0AEL8N_FZpF0DHo874VV8';
         
-        const savedPass = localStorage.getItem('admin_password');
-        if(savedPass) ADMIN_PASSWORD = savedPass;
+        let supabase, ADMIN_PASSWORD = 'admin123';
 
-        if(sessionStorage.getItem('is_logged_in') === 'true') {
-            showDashboard();
-        }
-
-        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') login();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.supabase) return alert("Supabase SDK not loaded.");
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            const savedPass = localStorage.getItem('admin_password');
+            if(savedPass) ADMIN_PASSWORD = savedPass;
+            if(sessionStorage.getItem('is_logged_in') === 'true') showDashboard();
         });
-    });
 
-    function login() {
-        if(document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-            sessionStorage.setItem('is_logged_in', 'true');
-            // Create a unique session ID on login
-            const sessionId = Date.now().toString();
-            localStorage.setItem('session_id', sessionId);
-            sessionStorage.setItem('current_session_id', sessionId);
-            
-            showDashboard();
-        } else {
-            showToast('Incorrect Password', 'error');
+        function login() {
+            if(document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
+                sessionStorage.setItem('is_logged_in', 'true');
+                showDashboard();
+            } else { alert('Wrong Password'); }
         }
-    }
 
-    function logout() {
-        sessionStorage.removeItem('is_logged_in');
-        // Stop timers
-        clearTimeout(inactivityTimer);
-        clearInterval(sessionChecker);
-        window.removeEventListener('mousemove', resetInactivityTimer);
-        window.removeEventListener('keypress', resetInactivityTimer);
-        location.reload();
-    }
+        function logout() {
+            sessionStorage.removeItem('is_logged_in');
+            location.reload();
+        }
 
-    function showDashboard() {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        fetchDevices();
-        setInterval(fetchDevices, 5000);
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            fetchDevices();
+            setInterval(fetchDevices, 5000);
+        }
+
+        async function fetchDevices() {
+            const { data, error } = await supabase.from('devices').select('*');
+            if(error) return;
+            const container = document.getElementById('deviceContainer');
+            if(data.length === 0) return container.innerHTML = '<p>No devices connected.</p>';
+            container.innerHTML = data.map(device => {
+                const isOnline = (new Date() - new Date(device.last_seen)) < 120000;
+                return `
+                <div class="device-card">
+                    <button class="btn-delete" onclick="deleteDevice('${device.device_id}')">X</button>
+                    <h3><span class="status-badge ${isOnline ? 'online' : 'offline'}">${isOnline ? 'Online' : 'Offline'}</span> ${device.model}</h3>
+                </div>`;
+            }).join('');
+        }
         
-        // Start Security Timers
-        resetInactivityTimer();
-        setupActivityListeners();
-        startSessionChecker();
-    }
+        async function deleteDevice(deviceId) {
+            if(!confirm('Delete this device?')) return;
+            await supabase.from('devices').delete().eq('device_id', deviceId);
+            fetchDevices();
+        }
 
-    // --- NEW: SECURITY FUNCTIONS ---
-    function resetInactivityTimer() {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(() => {
-            alert("Session expired due to inactivity.");
-            logout();
-        }, LOGOUT_TIME);
-    }
+        function openChangePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'block';
+        }
 
-    function setupActivityListeners() {
-        window.addEventListener('mousemove', resetInactivityTimer);
-        window.addEventListener('keypress', resetInactivityTimer);
-    }
-    
-    function startSessionChecker() {
-        sessionChecker = setInterval(() => {
-            if (sessionStorage.getItem('current_session_id') !== localStorage.getItem('session_id')) {
-                alert("Password changed elsewhere. Logging out.");
-                logout();
-            }
-        }, 3000); // Check every 3 seconds
-    }
-    
-    function openChangePasswordModal() {
-        document.getElementById('passwordModal').style.display = 'block';
-    }
+        function saveNewPassword() {
+            const curr = document.getElementById('currPass').value;
+            const newP = document.getElementById('newPass').value;
+            const conf = document.getElementById('confPass').value;
+            if(curr !== ADMIN_PASSWORD) return alert('Current password wrong');
+            if(newP.length < 4) return alert('Password too short');
+            if(newP !== conf) return alert('Passwords do not match');
+            ADMIN_PASSWORD = newP;
+            localStorage.setItem('admin_password', newP);
+            alert('Password Updated!');
+            closeModal('passwordModal');
+        }
 
-    function saveNewPassword() {
-        const curr = document.getElementById('currPass').value;
-        const newP = document.getElementById('newPass').value;
-        const conf = document.getElementById('confPass').value;
-
-        if(curr !== ADMIN_PASSWORD) return alert('Current password wrong');
-        if(newP.length < 4) return alert('Password too short');
-        if(newP !== conf) return alert('Passwords do not match');
-
-        ADMIN_PASSWORD = newP;
-        localStorage.setItem('admin_password', newP);
-        // NEW: Invalidate other sessions by changing the master session ID
-        localStorage.setItem('session_id', Date.now().toString());
-        
-        alert('Password Updated! Other open sessions will be logged out.');
-        closeModal('passwordModal');
-    }
-    
-    async function fetchDevices() {
-        // ... (fetchDevices and other functions remain the same as before)
-    }
-    
-    function closeModal(id) {
-        if(id) document.getElementById(id).style.display = 'none';
-        else document.getElementById('actionModal').style.display = 'none';
-    }
-
-    function showToast(msg, type='error') {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.background = type === 'error' ? '#dc3545' : '#333';
-        t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 3000);
-    }
-    
-    // ... (All other functions like fetchDevices, deleteDevice, openSmsModal, etc. go here)
-    // For brevity, I am not repeating them, but they should be in the script tag
-</script>
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
 </body>
 </html>
