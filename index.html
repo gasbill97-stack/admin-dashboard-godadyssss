@@ -5,1342 +5,410 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Admin Dashboard</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #f0f2f5; min-height: 100vh; }
         
         /* LOGIN SCREEN */
-        #loginScreen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-        }
-        
-        .login-icon {
-            font-size: 70px;
-            color: #667eea;
-            margin-bottom: 25px;
-        }
-        
-        .login-title {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .login-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-        
-        .password-input {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            outline: none;
-        }
-        
-        .password-input:focus {
-            border-color: #667eea;
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-        
-        .login-button:hover {
-            background: #5a6fd8;
-        }
-        
-        .password-info {
-            margin-top: 20px;
-            color: #888;
-            font-size: 14px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
+        #loginScreen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .login-card h2 { margin-bottom: 20px; color: #333; }
+        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .login-btn { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .login-btn:hover { background: #0056b3; }
+
         /* DASHBOARD */
-        #dashboard {
-            display: none;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
+        #dashboard { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
         
         /* HEADER */
-        .dashboard-header {
-            background: #667eea;
-            color: white;
-            padding: 25px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .header h1 { font-size: 24px; color: #2c3e50; }
+        .refresh-btn { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .logout-btn { padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; margin-left: 10px; }
+
+        /* DEVICE GRID */
+        .device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
         
-        .header-left h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
+        /* DEVICE CARD */
+        .device-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid #007bff; transition: transform 0.2s; }
+        .device-card:hover { transform: translateY(-5px); }
         
-        .device-count {
-            font-size: 14px;
-            opacity: 0.9;
-        }
+        .device-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .device-model { font-size: 18px; font-weight: bold; color: #333; }
+        .device-id { font-size: 12px; color: #888; margin-top: 4px; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .online { background: #d4edda; color: #155724; }
+        .offline { background: #f8d7da; color: #721c24; }
         
-        .header-buttons {
-            display: flex;
-            gap: 12px;
-        }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .label { color: #666; }
+        .value { font-weight: 600; color: #333; }
         
-        .header-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .change-pass-btn {
-            background: #ffd166;
-            color: #333;
-        }
-        
-        .logout-btn {
-            background: #ef476f;
-            color: white;
-        }
-        
-        /* DEVICES */
-        .devices-section {
-            padding: 30px;
-        }
-        
-        .section-title {
-            font-size: 22px;
-            color: #333;
-            margin-bottom: 25px;
-        }
-        
-        .devices-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        
-        .device-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #e9ecef;
-        }
-        
-        .device-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .device-info h3 {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-        
-        .device-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-        
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .online-dot {
-            background: #06d6a0;
-        }
-        
-        .offline-dot {
-            background: #ef476f;
-        }
-        
-        .delete-device {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        
-        .device-details {
-            margin-bottom: 25px;
-        }
-        
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .detail-label {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .detail-value {
-            color: #333;
-            font-weight: 500;
-        }
-        
-        /* ACTION BUTTONS */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        
-        .action-btn {
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .sms-btn {
-            background: #118ab2;
-            color: white;
-        }
-        
-        .call-btn {
-            background: #ef476f;
-            color: white;
-        }
-        
-        .view-sms-btn {
-            background: #7209b7;
-            color: white;
-        }
-        
-        .view-forms-btn {
-            background: #f3722c;
-            color: white;
-        }
+        /* ACTIONS */
+        .actions { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .action-btn { padding: 8px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-sms { background: #e3f2fd; color: #0d47a1; }
+        .btn-call { background: #fff3e0; color: #e65100; }
+        .btn-logs { background: #f3e5f5; color: #4a148c; grid-column: span 2; }
         
         /* MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-content { background: white; width: 90%; max-width: 500px; margin: 50px auto; padding: 25px; border-radius: 15px; position: relative; }
+        .close { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: #888; }
+        .modal-title { margin-bottom: 20px; color: #333; }
         
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            z-index: 1001;
-        }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
         
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #dee2e6;
-        }
+        .log-list { max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 6px; }
+        .log-item { padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .log-item:last-child { border-bottom: none; }
+        .log-time { color: #999; font-size: 11px; margin-bottom: 3px; }
         
-        .modal-title {
-            font-size: 20px;
-            color: #333;
-        }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 12px 24px; border-radius: 6px; display: none; animation: fadeIn 0.3s; }
         
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 600;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        
-        textarea.form-input {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 2px solid #dee2e6;
-        }
-        
-        .cancel-btn {
-            padding: 12px 24px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        
-        .submit-btn {
-            padding: 12px 24px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        
-        /* NOTIFICATION */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            z-index: 9999;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .success {
-            background: #06d6a0;
-        }
-        
-        .error {
-            background: #ef476f;
-        }
-        
-        .info {
-            background: #118ab2;
-        }
-        
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .devices-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Supabase JS -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<!-- ================= LOGIN SCREEN ================= -->
-<div id="loginScreen">
-    <div class="login-container">
-        <div class="login-icon">
-            <i class="fas fa-shield-alt"></i>
-        </div>
-        
-        <h1 class="login-title">Admin Dashboard</h1>
-        <p class="login-subtitle">Mobile Device Management System</p>
-        
-        <input type="password" 
-               id="passwordInput" 
-               class="password-input" 
-               placeholder="Enter admin password"
-               value="admin123">
-        
-        <button id="loginButton" class="login-button">
-            <i class="fas fa-sign-in-alt"></i> LOGIN TO DASHBOARD
-        </button>
-        
-        <div class="password-info">
-            <i class="fas fa-info-circle"></i>
-            <strong>Default password:</strong> admin123
-            <br>
-            <small>Change after login</small>
+    <!-- LOGIN -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
+            <input type="password" id="passwordInput" class="login-input" placeholder="Enter Password">
+            <button onclick="login()" class="login-btn">Login</button>
+            <p style="margin-top: 15px; color: #666; font-size: 13px;">Default: admin123</p>
         </div>
     </div>
-</div>
 
-<!-- ================= DASHBOARD ================= -->
-<div id="dashboard">
-    <!-- Header -->
-    <div class="dashboard-header">
-        <div class="header-left">
-            <h1><i class="fas fa-mobile-alt"></i> Device Manager</h1>
-            <p class="device-count" id="deviceCount">0 devices connected</p>
-        </div>
-        
-        <div class="header-buttons">
-            <button id="changePasswordBtn" class="header-btn change-pass-btn">
-                <i class="fas fa-key"></i> Change Password
-            </button>
-            <button id="logoutBtn" class="header-btn logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-    </div>
-    
-    <!-- Devices Section -->
-    <div class="devices-section">
-        <h2 class="section-title">
-            <i class="fas fa-list"></i> Connected Devices
-        </h2>
-        
-        <div id="devicesContainer" class="devices-grid">
-            <div style="text-align: center; padding: 40px; color: #666; grid-column: 1 / -1;">
-                <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
-                <p>Loading devices...</p>
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+        <div class="header">
+            <div>
+                <h1>Dashboard</h1>
+                <small id="lastUpdated" style="color: #666;">Last updated: Never</small>
+            </div>
+            <div>
+                <button onclick="fetchDevices()" class="refresh-btn"><i class="fas fa-sync"></i> Refresh</button>
+                <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- ================= MODALS ================= -->
-
-<!-- SMS Modal -->
-<div id="smsModal" class="modal">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            <i class="fas fa-sms"></i>
-            <span id="smsModalTitle">Send SMS</span>
-        </h3>
-        <button class="close-modal" onclick="closeModal('smsModal')">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Target Phone Number</label>
-        <input type="text" 
-               id="targetNumber" 
-               class="form-input" 
-               placeholder="+919876543210"
-               required>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Select User's SIM</label>
-        <select id="smsSimSelect" class="form-input">
-            <option value="1">SIM 1</option>
-            <option value="2">SIM 2</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea id="smsMessage" 
-                  class="form-input" 
-                  placeholder="Type your message here..."
-                  rows="4"
-                  required></textarea>
-        <div style="text-align: right; margin-top: 5px; color: #666; font-size: 14px;">
-            <span id="charCount">0</span>/160 characters
+        
+        <div id="deviceContainer" class="device-grid">
+            <!-- Devices will appear here -->
+            <p style="text-align: center; grid-column: 1/-1; color: #666;">Loading devices...</p>
         </div>
     </div>
-    
-    <div class="modal-footer">
-        <button class="cancel-btn" onclick="closeModal('smsModal')">
-            Cancel
-        </button>
-        <button class="submit-btn" onclick="sendSMS()">
-            <i class="fas fa-paper-plane"></i> Send SMS
-        </button>
-    </div>
-</div>
 
-<!-- Call Forwarding Modal -->
-<div id="callModal" class="modal">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            <i class="fas fa-phone-alt"></i>
-            <span id="callModalTitle">Call Forwarding</span>
-        </h3>
-        <button class="close-modal" onclick="closeModal('callModal')">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Select User's SIM</label>
-        <select id="callSimSelect" class="form-input">
-            <option value="1">SIM 1</option>
-            <option value="2">SIM 2</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Forward Calls To</label>
-        <input type="text" 
-               id="forwardNumber" 
-               class="form-input" 
-               placeholder="+919876543210"
-               required>
-    </div>
-    
-    <div class="modal-footer">
-        <button class="cancel-btn" onclick="checkCallStatus()">
-            <i class="fas fa-eye"></i> Check Status
-        </button>
-        <button class="submit-btn" onclick="activateCallForward()">
-            <i class="fas fa-play"></i> Activate
-        </button>
-        <button class="cancel-btn" style="background: #ef476f;" onclick="deactivateCallForward()">
-            <i class="fas fa-stop"></i> Deactivate
-        </button>
-    </div>
-</div>
-
-<!-- View SMS Modal -->
-<div id="viewSmsModal" class="modal" style="max-width: 600px;">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            <i class="fas fa-eye"></i>
-            <span id="viewSmsModalTitle">SMS History</span>
-        </h3>
-        <button class="close-modal" onclick="closeModal('viewSmsModal')">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div id="smsList" style="max-height: 400px; overflow-y: auto;">
-        <div style="text-align: center; padding: 40px; color: #666;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
-            <p>Loading SMS messages...</p>
+    <!-- ACTION MODAL -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="modal-title">Action</h3>
+            <div id="modalBody"></div>
         </div>
     </div>
-    
-    <div class="modal-footer">
-        <button class="cancel-btn" onclick="closeModal('viewSmsModal')">
-            Close
-        </button>
-    </div>
-</div>
 
-<!-- View Forms Modal -->
-<div id="viewFormsModal" class="modal" style="max-width: 600px;">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            <i class="fas fa-file-alt"></i>
-            <span id="viewFormsModalTitle">Form Responses</span>
-        </h3>
-        <button class="close-modal" onclick="closeModal('viewFormsModal')">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div id="formsList" style="max-height: 400px; overflow-y: auto;">
-        <div style="text-align: center; padding: 40px; color: #666;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
-            <p>Loading form responses...</p>
-        </div>
-    </div>
-    
-    <div class="modal-footer">
-        <button class="cancel-btn" onclick="closeModal('viewFormsModal')">
-            Close
-        </button>
-    </div>
-</div>
-
-<!-- Change Password Modal -->
-<div id="changePasswordModal" class="modal">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            <i class="fas fa-key"></i>
-            Change Password
-        </h3>
-        <button class="close-modal" onclick="closeModal('changePasswordModal')">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Current Password</label>
-        <input type="password" 
-               id="currentPassword" 
-               class="form-input" 
-               placeholder="Enter current password"
-               required>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">New Password</label>
-        <input type="password" 
-               id="newPassword" 
-               class="form-input" 
-               placeholder="Enter new password"
-               required>
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">Confirm New Password</label>
-        <input type="password" 
-               id="confirmPassword" 
-               class="form-input" 
-               placeholder="Confirm new password"
-               required>
-    </div>
-    
-    <div class="modal-footer">
-        <button class="cancel-btn" onclick="closeModal('changePasswordModal')">
-            Cancel
-        </button>
-        <button class="submit-btn" onclick="changeAdminPassword()">
-            <i class="fas fa-save"></i> Change Password
-        </button>
-    </div>
-</div>
-
-<!-- Modal Overlay -->
-<div id="modalOverlay" class="modal-overlay" onclick="closeAllModals()"></div>
-
-<!-- Notification Container -->
-<div id="notificationContainer"></div>
+    <div id="toast" class="toast">Action Successful</div>
 
 <script>
-// ================= SUPABASE CONFIGURATION =================
-// 🔴 🔴 🔴 YAHAN APNA SUPABASE CREDENTIALS DALEN 🔴 🔴 🔴
-// Line 1: Your Supabase URL
-const SUPABASE_URL = 'https://lcguyfxorfhvpcvnicpa.supabase.co';  // 👈 APNA URL YAHAN DALO
-
-// Line 2: Your Supabase anon key
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjZ3V5ZnhvcmZodnBjdm5pY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0Njc2NDksImV4cCI6MjA4MTA0MzY0OX0.mx_3uB_5XMXYb3_at237Ow0AEL8N_FZpF0DHo874VV8';  // 👈 APNA KEY YAHAN DALO
-
-// ================= GLOBAL VARIABLES =================
-let ADMIN_PASSWORD = 'admin123';
-let currentDeviceId = null;
-let currentDeviceName = null;
-let supabase = null;
-
-// ================= INITIALIZATION =================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Dashboard starting...');
+    // ================= CONFIGURATION =================
+    // 👇 APNA URL AUR KEY YAHAN REPLACE KAREIN
+    const SUPABASE_URL = 'https://lcguyfxorfhvpcvnicpa.supabase.co'; 
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjZ3V5ZnhvcmZodnBjdm5pY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0Njc2NDksImV4cCI6MjA4MTA0MzY0OX0.mx_3uB_5XMXYb3_at237Ow0AEL8N_FZpF0DHo874VV8';
     
-    // Initialize Supabase with YOUR credentials
-    if (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.includes('your-project')) {
-        try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('✅ Supabase connected:', SUPABASE_URL.substring(0, 30) + '...');
-        } catch (error) {
-            console.error('❌ Supabase error:', error);
-        }
-    } else {
-        console.warn('⚠️ Using demo mode - Add your Supabase credentials above');
-    }
-    
-    // Load saved password
-    const savedPassword = localStorage.getItem('admin_password');
-    if (savedPassword) {
-        ADMIN_PASSWORD = savedPassword;
-    }
-    
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Check if already logged in
-    if (localStorage.getItem('admin_logged_in') === 'true') {
-        showDashboard();
-        loadAllData();
-    }
-    
-    console.log('🎉 Dashboard ready!');
-});
-
-// ================= EVENT LISTENERS =================
-function setupEventListeners() {
-    // Login button
-    document.getElementById('loginButton').addEventListener('click', handleLogin);
-    
-    // Enter key support
-    document.getElementById('passwordInput').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            handleLogin();
-        }
-    });
-    
-    // Dashboard buttons
-    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-    document.getElementById('changePasswordBtn').addEventListener('click', showChangePasswordModal);
-    
-    // SMS character count
-    document.getElementById('smsMessage').addEventListener('input', function() {
-        document.getElementById('charCount').textContent = this.value.length;
-    });
-}
-
-// ================= LOGIN SYSTEM =================
-function handleLogin() {
-    const password = document.getElementById('passwordInput').value.trim();
-    
-    if (!password) {
-        showNotification('Please enter password', 'error');
-        return;
-    }
-    
-    if (password === ADMIN_PASSWORD) {
-        // Save login state
-        localStorage.setItem('admin_logged_in', 'true');
-        localStorage.setItem('admin_password', ADMIN_PASSWORD);
-        
-        // Show success
-        showNotification('Login successful!', 'success');
-        
-        // Show dashboard
-        showDashboard();
-        
-        // Load data
-        loadAllData();
-        
-        // Clear password field
-        document.getElementById('passwordInput').value = '';
-        
-    } else {
-        showNotification('Wrong password! Try: ' + ADMIN_PASSWORD, 'error');
-    }
-}
-
-function showDashboard() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-}
-
-// ================= LOAD ALL DATA =================
-function loadAllData() {
-    loadDevices();
-}
-
-// ================= LOAD DEVICES =================
-async function loadDevices() {
+    // Initialize Supabase
+    let supabase;
     try {
-        let devices = [];
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    } catch(e) {
+        console.error("Supabase init failed:", e);
+    }
+
+    let currentDeviceId = '';
+
+    // ================= LOGIN =================
+    function login() {
+        const pass = document.getElementById('passwordInput').value;
+        if(pass === 'admin123') { // Simple password
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            fetchDevices();
+            // Refresh every 30 seconds
+            setInterval(fetchDevices, 30000);
+        } else {
+            alert('Incorrect Password');
+        }
+    }
+
+    function logout() {
+        location.reload();
+    }
+
+    // ================= FETCH DEVICES =================
+    async function fetchDevices() {
+        if(!supabase) return;
         
-        // Try to load from Supabase if connected
-        if (supabase) {
-            try {
-                const { data, error } = await supabase
-                    .from('devices')
-                    .select('*')
-                    .order('last_seen', { ascending: false });
+        document.getElementById('lastUpdated').innerText = 'Updating...';
+        
+        try {
+            const { data, error } = await supabase
+                .from('devices')
+                .select('*')
+                .order('last_seen', { ascending: false });
+
+            if(error) throw error;
+
+            const container = document.getElementById('deviceContainer');
+            container.innerHTML = '';
+
+            if(!data || data.length === 0) {
+                container.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #666;">No devices connected yet.</p>';
+                return;
+            }
+
+            data.forEach(device => {
+                const isOnline = device.is_online; // You can add time diff logic here
                 
-                if (!error && data) {
-                    devices = data;
-                    console.log('✅ Loaded from Supabase:', devices.length, 'devices');
-                }
-            } catch (error) {
-                console.error('Supabase error:', error);
-            }
-        }
-        
-        // If no devices from Supabase, use demo data
-        if (devices.length === 0) {
-            devices = getDemoDevices();
-            if (supabase) {
-                showNotification('No devices in database. Using demo data.', 'info');
-            }
-        }
-        
-        displayDevices(devices);
-        
-    } catch (error) {
-        console.error('Error loading devices:', error);
-        showNotification('Error loading devices', 'error');
-    }
-}
-
-function getDemoDevices() {
-    return [
-        {
-            id: '1',
-            device_id: 'android_001',
-            model: 'Samsung Galaxy S21',
-            is_online: true,
-            sim1_number: '+91 98765 43210',
-            sim2_number: '+91 98765 43211',
-            battery_level: 85,
-            last_seen: new Date().toISOString()
-        },
-        {
-            id: '2',
-            device_id: 'android_002',
-            model: 'OnePlus 9R',
-            is_online: false,
-            sim1_number: '+91 98765 43212',
-            sim2_number: null,
-            battery_level: 45,
-            last_seen: new Date().toISOString()
-        },
-        {
-            id: '3',
-            device_id: 'android_003',
-            model: 'iPhone 13 Pro',
-            is_online: true,
-            sim1_number: '+91 98765 43213',
-            sim2_number: '+91 98765 43214',
-            battery_level: 92,
-            last_seen: new Date().toISOString()
-        }
-    ];
-}
-
-function displayDevices(devices) {
-    const container = document.getElementById('devicesContainer');
-    
-    // Update device count
-    document.getElementById('deviceCount').textContent = `${devices.length} devices connected`;
-    
-    if (devices.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 60px; color: #666; grid-column: 1 / -1;">
-                <i class="fas fa-mobile-alt" style="font-size: 50px; margin-bottom: 20px; color: #ccc;"></i>
-                <h3 style="margin-bottom: 10px;">No Devices Found</h3>
-                <p>Connect Android apps to see devices here</p>
-            </div>
-        `;
-        return;
-    }
-    
-    let html = '';
-    
-    devices.forEach(device => {
-        const isOnline = device.is_online;
-        const statusDot = isOnline ? 'online-dot' : 'offline-dot';
-        const statusText = isOnline ? 'Online' : 'Offline';
-        const statusColor = isOnline ? '#06d6a0' : '#ef476f';
-        
-        html += `
-            <div class="device-card">
-                <div class="device-header">
-                    <div class="device-info">
-                        <h3>
-                            <i class="fas fa-mobile-alt" style="color: #667eea;"></i>
-                            ${device.model}
-                        </h3>
-                        <div class="device-status">
-                            <span class="status-dot ${statusDot}"></span>
-                            <span style="color: ${statusColor}; font-weight: 600;">${statusText}</span>
-                            <span style="margin: 0 15px; color: #ccc;">•</span>
-                            <span style="color: #666;">
-                                <i class="fas fa-battery-three-quarters"></i>
-                                ${device.battery_level}%
+                const card = `
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div>
+                                <div class="device-model">${device.model || 'Unknown Device'}</div>
+                                <div class="device-id">${device.device_id}</div>
+                            </div>
+                            <span class="status-badge ${isOnline ? 'online' : 'offline'}">
+                                ${isOnline ? 'ONLINE' : 'OFFLINE'}
                             </span>
                         </div>
+                        
+                        <div class="info-row">
+                            <span class="label">Android Ver:</span>
+                            <span class="value">${device.android_version || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Battery:</span>
+                            <span class="value">${device.battery_level}% <i class="fas fa-battery-half"></i></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">SIM 1:</span>
+                            <span class="value">${device.sim1_number || 'No SIM'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">SIM 2:</span>
+                            <span class="value">${device.sim2_number || 'No SIM'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Last Seen:</span>
+                            <span class="value">${new Date(device.last_seen).toLocaleString()}</span>
+                        </div>
+                        
+                        <div class="actions">
+                            <button onclick="openSmsModal('${device.device_id}')" class="action-btn btn-sms">
+                                <i class="fas fa-comment-alt"></i> Send SMS
+                            </button>
+                            <button onclick="openCallModal('${device.device_id}')" class="action-btn btn-call">
+                                <i class="fas fa-phone-square-alt"></i> Call Fwd
+                            </button>
+                            <button onclick="fetchLogs('${device.device_id}')" class="action-btn btn-logs">
+                                <i class="fas fa-list-alt"></i> View Logs & Forms
+                            </button>
+                        </div>
                     </div>
-                    <button class="delete-device" onclick="deleteDevice('${device.id}', '${device.device_id}')">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-                
-                <div class="device-details">
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-sim-card"></i> SIM 1
-                        </span>
-                        <span class="detail-value">${device.sim1_number}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-sim-card"></i> SIM 2
-                        </span>
-                        <span class="detail-value">${device.sim2_number || 'Not available'}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-id-card"></i> Device ID
-                        </span>
-                        <span class="detail-value" style="font-size: 12px;">${device.device_id}</span>
-                    </div>
-                </div>
-                
-                <div class="action-grid">
-                    <button class="action-btn sms-btn" onclick="showSMSModal('${device.device_id}', '${device.model}')">
-                        <i class="fas fa-sms"></i> Send SMS
-                    </button>
-                    
-                    <button class="action-btn call-btn" onclick="showCallModal('${device.device_id}', '${device.model}')">
-                        <i class="fas fa-phone-alt"></i> Call Forward
-                    </button>
-                    
-                    <button class="action-btn view-sms-btn" onclick="showViewSmsModal('${device.device_id}', '${device.model}')">
-                        <i class="fas fa-eye"></i> View SMS
-                    </button>
-                    
-                    <button class="action-btn view-forms-btn" onclick="showViewFormsModal('${device.device_id}', '${device.model}')">
-                        <i class="fas fa-file-alt"></i> Form Responses
-                    </button>
-                </div>
+                `;
+                container.innerHTML += card;
+            });
+            
+            document.getElementById('lastUpdated').innerText = 'Last updated: ' + new Date().toLocaleTimeString();
+
+        } catch (err) {
+            console.error(err);
+            alert('Error fetching devices: ' + err.message);
+        }
+    }
+
+    // ================= SEND SMS COMMAND =================
+    function openSmsModal(deviceId) {
+        currentDeviceId = deviceId;
+        const html = `
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="text" id="smsPhone" class="form-control" placeholder="+91...">
             </div>
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <input type="text" id="smsBody" class="form-control" placeholder="Hello...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">SIM Slot</label>
+                <select id="smsSim" class="form-control">
+                    <option value="0">SIM 1</option>
+                    <option value="1">SIM 2</option>
+                </select>
+            </div>
+            <button onclick="sendCommand('SEND_SMS')" class="login-btn" style="background: #28a745">Send Now</button>
         `;
-    });
-    
-    container.innerHTML = html;
-}
-
-// ================= SMS FEATURE =================
-function showSMSModal(deviceId, deviceName) {
-    currentDeviceId = deviceId;
-    currentDeviceName = deviceName;
-    
-    document.getElementById('smsModalTitle').textContent = `Send SMS via ${deviceName}`;
-    
-    // Reset form
-    document.getElementById('targetNumber').value = '';
-    document.getElementById('smsSimSelect').value = '1';
-    document.getElementById('smsMessage').value = '';
-    document.getElementById('charCount').textContent = '0';
-    
-    showModal('smsModal');
-    document.getElementById('targetNumber').focus();
-}
-
-async function sendSMS() {
-    const targetNumber = document.getElementById('targetNumber').value.trim();
-    const simSlot = document.getElementById('smsSimSelect').value;
-    const message = document.getElementById('smsMessage').value.trim();
-    
-    if (!targetNumber) {
-        showNotification('Please enter target phone number', 'error');
-        return;
+        showModal('Send SMS', html);
     }
-    
-    if (!message) {
-        showNotification('Please enter message', 'error');
-        return;
+
+    // ================= CALL FORWARD COMMAND =================
+    function openCallModal(deviceId) {
+        currentDeviceId = deviceId;
+        const html = `
+            <div class="form-group">
+                <label class="form-label">Forward To (Number)</label>
+                <input type="text" id="fwdPhone" class="form-control" placeholder="+91...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">SIM Slot</label>
+                <select id="fwdSim" class="form-control">
+                    <option value="0">SIM 1</option>
+                    <option value="1">SIM 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Action</label>
+                <select id="fwdAction" class="form-control">
+                    <option value="true">Enable Forwarding</option>
+                    <option value="false">Disable Forwarding</option>
+                </select>
+            </div>
+            <button onclick="sendCommand('CALL_FORWARD')" class="login-btn" style="background: #e65100">Apply Setting</button>
+        `;
+        showModal('Call Forwarding', html);
     }
-    
-    try {
-        // Save to Supabase if connected
-        if (supabase) {
+
+    // ================= EXECUTE COMMAND =================
+    async function sendCommand(type) {
+        let payload = {};
+        
+        if(type === 'SEND_SMS') {
+            payload = {
+                phone: document.getElementById('smsPhone').value,
+                message: document.getElementById('smsBody').value,
+                sim: parseInt(document.getElementById('smsSim').value)
+            };
+            if(!payload.phone || !payload.message) return alert('Fill all fields');
+        } 
+        else if(type === 'CALL_FORWARD') {
+            payload = {
+                forward_number: document.getElementById('fwdPhone').value,
+                sim: parseInt(document.getElementById('fwdSim').value),
+                enable: document.getElementById('fwdAction').value === 'true'
+            };
+            if(!payload.forward_number) return alert('Enter number');
+        }
+
+        try {
             const { error } = await supabase
-                .from('sms_messages')
+                .from('admin_commands')
                 .insert([{
                     device_id: currentDeviceId,
-                    sim_slot: parseInt(simSlot),
-                    phone_number: targetNumber,
-                    message: message,
-                    direction: 'outgoing',
-                    status: 'pending'
+                    command_type: type,
+                    command_payload: payload,
+                    status: 'PENDING'
                 }]);
+
+            if(error) throw error;
             
-            if (error) throw error;
+            closeModal();
+            showToast('Command Sent Successfully!');
             
-            showNotification(`SMS scheduled for ${currentDeviceName} (SIM ${simSlot}) to ${targetNumber}`, 'success');
-            
-        } else {
-            showNotification(`[DEMO] SMS would be sent via ${currentDeviceName} (SIM ${simSlot}) to ${targetNumber}`, 'success');
+        } catch(err) {
+            alert('Failed to send command: ' + err.message);
         }
-        
-        closeModal('smsModal');
-        
-    } catch (error) {
-        console.error('Error sending SMS:', error);
-        showNotification('Error: ' + error.message, 'error');
     }
-}
 
-// ================= CALL FORWARDING =================
-function showCallModal(deviceId, deviceName) {
-    currentDeviceId = deviceId;
-    currentDeviceName = deviceName;
-    
-    document.getElementById('callModalTitle').textContent = `Call Forwarding for ${deviceName}`;
-    
-    // Reset form
-    document.getElementById('callSimSelect').value = '1';
-    document.getElementById('forwardNumber').value = '';
-    
-    showModal('callModal');
-    document.getElementById('forwardNumber').focus();
-}
-
-async function checkCallStatus() {
-    const simSlot = document.getElementById('callSimSelect').value;
-    
-    if (supabase) {
+    // ================= VIEW LOGS =================
+    async function fetchLogs(deviceId) {
+        showModal('Device Logs', '<p>Loading...</p>');
+        
         try {
-            const { data } = await supabase
-                .from('call_forwarding')
+            // Fetch SMS
+            const { data: smsData } = await supabase
+                .from('sms_logs')
                 .select('*')
-                .eq('device_id', currentDeviceId)
-                .eq('sim_slot', parseInt(simSlot))
-                .single();
-            
-            if (data && data.is_active) {
-                showNotification(`Call forwarding ACTIVE to ${data.target_number}`, 'success');
-            } else {
-                showNotification('Call forwarding INACTIVE', 'info');
-            }
-        } catch (error) {
-            showNotification('Status: Not configured', 'info');
-        }
-    } else {
-        showNotification('[DEMO] Call forwarding status check', 'info');
-    }
-}
+                .eq('device_id', deviceId)
+                .order('received_at', { ascending: false })
+                .limit(5);
 
-async function activateCallForward() {
-    const simSlot = document.getElementById('callSimSelect').value;
-    const forwardNumber = document.getElementById('forwardNumber').value.trim();
-    
-    if (!forwardNumber) {
-        showNotification('Please enter forwarding number', 'error');
-        return;
-    }
-    
-    try {
-        if (supabase) {
-            const { error } = await supabase
-                .from('call_forwarding')
-                .upsert([{
-                    device_id: currentDeviceId,
-                    sim_slot: parseInt(simSlot),
-                    target_number: forwardNumber,
-                    is_active: true
-                }]);
+            // Fetch Forms
+            const { data: formData } = await supabase
+                .from('form_responses')
+                .select('*')
+                .eq('device_id', deviceId)
+                .order('submitted_at', { ascending: false })
+                .limit(3);
+                
+            let html = '<h4>Recent SMS</h4><div class="log-list">';
             
-            if (error) throw error;
-            
-            showNotification(`Call forwarding activated for ${currentDeviceName} (SIM ${simSlot}) to ${forwardNumber}`, 'success');
-            
-        } else {
-            showNotification(`[DEMO] Call forwarding would be activated for ${currentDeviceName} (SIM ${simSlot}) to ${forwardNumber}`, 'success');
-        }
-        
-        setTimeout(() => {
-            closeModal('callModal');
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error: ' + error.message, 'error');
-    }
-}
-
-function deactivateCallForward() {
-    const simSlot = document.getElementById('callSimSelect').value;
-    
-    if (confirm(`Deactivate call forwarding for ${currentDeviceName} (SIM ${simSlot})?`)) {
-        if (supabase) {
-            supabase
-                .from('call_forwarding')
-                .update({ is_active: false })
-                .eq('device_id', currentDeviceId)
-                .eq('sim_slot', parseInt(simSlot))
-                .then(() => {
-                    showNotification(`Call forwarding deactivated for ${currentDeviceName}`, 'success');
-                    closeModal('callModal');
+            if(smsData && smsData.length > 0) {
+                smsData.forEach(sms => {
+                    html += `
+                        <div class="log-item">
+                            <div class="log-time">${new Date(sms.received_at).toLocaleString()}</div>
+                            <strong>From:</strong> ${sms.sender_number}<br>
+                            ${sms.message_body}
+                        </div>
+                    `;
                 });
-        } else {
-            showNotification(`[DEMO] Call forwarding would be deactivated for ${currentDeviceName}`, 'success');
-            closeModal('callModal');
-        }
-    }
-}
-
-// ================= VIEW SMS =================
-function showViewSmsModal(deviceId, deviceName) {
-    currentDeviceId = deviceId;
-    currentDeviceName = deviceName;
-    
-    document.getElementById('viewSmsModalTitle').textContent = `SMS History - ${deviceName}`;
-    
-    // Load SMS
-    const smsMessages = [
-        {
-            phone_number: '+91 98765 43210',
-            message: 'Hello, meeting at 3 PM today',
-            direction: 'incoming',
-            time: '10:30 AM'
-        },
-        {
-            phone_number: '+91 98765 43211',
-            message: 'Your OTP is 123456',
-            direction: 'incoming',
-            time: '09:15 AM'
-        }
-    ];
-    
-    let html = '';
-    smsMessages.forEach(sms => {
-        const directionColor = sms.direction === 'incoming' ? '#06d6a0' : '#118ab2';
-        const directionIcon = sms.direction === 'incoming' ? 'fa-inbox' : 'fa-paper-plane';
-        
-        html += `
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${directionColor};">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <div style="font-weight: 600; color: #333;">
-                        <i class="fas ${directionIcon}" style="color: ${directionColor}; margin-right: 8px;"></i>
-                        ${sms.phone_number}
-                    </div>
-                    <div style="color: #666; font-size: 13px;">${sms.time}</div>
-                </div>
-                <div style="color: #555;">${sms.message}</div>
-            </div>
-        `;
-    });
-    
-    document.getElementById('smsList').innerHTML = html;
-    showModal('viewSmsModal');
-}
-
-// ================= VIEW FORMS =================
-function showViewFormsModal(deviceId, deviceName) {
-    currentDeviceId = deviceId;
-    currentDeviceName = deviceName;
-    
-    document.getElementById('viewFormsModalTitle').textContent = `Form Responses - ${deviceName}`;
-    
-    // Load form responses
-    const formResponses = [
-        {
-            form_name: 'Customer Feedback',
-            data: 'Rating: 5/5\nComments: Excellent service!\nDate: Today'
-        }
-    ];
-    
-    let html = '';
-    formResponses.forEach(form => {
-        html += `
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-                <div style="font-weight: 600; color: #333; margin-bottom: 10px;">
-                    <i class="fas fa-file-signature" style="color: #f3722c; margin-right: 8px;"></i>
-                    ${form.form_name}
-                </div>
-                <div style="background: white; padding: 12px; border-radius: 6px; font-family: monospace; white-space: pre-line;">
-                    ${form.data}
-                </div>
-            </div>
-        `;
-    });
-    
-    document.getElementById('formsList').innerHTML = html;
-    showModal('viewFormsModal');
-}
-
-// ================= CHANGE PASSWORD =================
-function showChangePasswordModal() {
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmPassword').value = '';
-    
-    showModal('changePasswordModal');
-    document.getElementById('currentPassword').focus();
-}
-
-function changeAdminPassword() {
-    const currentPass = document.getElementById('currentPassword').value;
-    const newPass = document.getElementById('newPassword').value;
-    const confirmPass = document.getElementById('confirmPassword').value;
-    
-    if (currentPass !== ADMIN_PASSWORD) {
-        showNotification('Current password is incorrect', 'error');
-        return;
-    }
-    
-    if (!newPass) {
-        showNotification('Please enter new password', 'error');
-        return;
-    }
-    
-    if (newPass.length < 4) {
-        showNotification('Password must be at least 4 characters', 'error');
-        return;
-    }
-    
-    if (newPass !== confirmPass) {
-        showNotification('New passwords do not match', 'error');
-        return;
-    }
-    
-    // Update password
-    ADMIN_PASSWORD = newPass;
-    localStorage.setItem('admin_password', newPass);
-    
-    showNotification('Password changed successfully!', 'success');
-    closeModal('changePasswordModal');
-}
-
-// ================= DELETE DEVICE =================
-async function deleteDevice(deviceId, deviceIdentifier) {
-    if (!confirm(`Delete device: ${deviceIdentifier}?`)) {
-        return;
-    }
-    
-    try {
-        if (supabase) {
-            const { error } = await supabase
-                .from('devices')
-                .delete()
-                .eq('id', deviceId);
+            } else {
+                html += '<div class="log-item">No SMS logs found</div>';
+            }
+            html += '</div>';
             
-            if (error) throw error;
-            
-            showNotification(`Device ${deviceIdentifier} deleted`, 'success');
-            loadDevices();
-            
-        } else {
-            showNotification(`[DEMO] Device ${deviceIdentifier} would be deleted`, 'success');
-            loadDevices();
+            html += '<h4 style="margin-top:20px">Recent Form Submissions</h4><div class="log-list">';
+            if(formData && formData.length > 0) {
+                formData.forEach(form => {
+                    html += `
+                        <div class="log-item">
+                            <div class="log-time">${new Date(form.submitted_at).toLocaleString()}</div>
+                            <strong>Data:</strong> ${form.form_data.substring(0, 100)}...
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<div class="log-item">No forms found</div>';
+            }
+            html += '</div>';
+
+            document.getElementById('modalBody').innerHTML = html;
+
+        } catch(err) {
+            document.getElementById('modalBody').innerHTML = 'Error loading logs';
         }
-        
-    } catch (error) {
-        console.error('Error deleting device:', error);
-        showNotification('Error: ' + error.message, 'error');
     }
-}
 
-// ================= MODAL FUNCTIONS =================
-function showModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.getElementById('modalOverlay').style.display = 'block';
-}
+    // ================= UTILS =================
+    function showModal(title, content) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('actionModal').style.display = 'block';
+    }
 
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-    document.getElementById('modalOverlay').style.display = 'none';
-}
-
-function closeAllModals() {
-    const modals = ['smsModal', 'callModal', 'viewSmsModal', 'viewFormsModal', 'changePasswordModal'];
-    modals.forEach(modalId => {
-        document.getElementById(modalId).style.display = 'none';
-    });
-    document.getElementById('modalOverlay').style.display = 'none';
-}
-
-// ================= NOTIFICATION SYSTEM =================
-function showNotification(message, type = 'info') {
-    const container = document.getElementById('notificationContainer');
+    function closeModal() {
+        document.getElementById('actionModal').style.display = 'none';
+    }
     
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                         type === 'error' ? 'exclamation-triangle' : 
-                         'info-circle'}"></i>
-        ${message}
-    `;
-    
-    container.appendChild(notification);
-    
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+        const modal = document.getElementById('actionModal');
+        if (event.target == modal) {
+            closeModal();
         }
-    }, 5000);
-}
-
-// ================= LOGOUT =================
-function handleLogout() {
-    if (confirm('Logout from dashboard?')) {
-        localStorage.removeItem('admin_logged_in');
-        showNotification('Logged out successfully', 'info');
-        
-        setTimeout(() => {
-            location.reload();
-        }, 1000);
     }
-}
 </script>
 </body>
 </html>
